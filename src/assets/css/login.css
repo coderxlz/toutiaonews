@@ -1,0 +1,38 @@
+html{
+  background-color: #f5f7f9;
+}
+
+.van-nav-bar{
+  background-color: #3296fa;
+}
+
+.van-nav-bar__title{
+  color: #fff;
+}
+
+.van-field button{
+  background-color: #ededed;
+  color: #666;
+  border: none;
+  border-radius: 20px;
+}
+
+.van-field__button{
+  padding-left: 15px;
+  border-left: 1px solid #ededed;
+}
+
+.loginwrap{
+  padding:0 16px;
+  margin-top: 20px;
+}
+
+.login{
+  background-color: #3296fa;
+  color: #fff;
+  border-radius: 20px;
+}
+
+#codeinput{
+  align-items: center;
+}
