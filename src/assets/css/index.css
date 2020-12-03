@@ -8,4 +8,10 @@
 
 html{
   user-select: none;
+  background-color: #f5f7f9;
 }
+
+.van-cell__title::after{
+  border: none;
+}
+

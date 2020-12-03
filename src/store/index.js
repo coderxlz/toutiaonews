@@ -25,6 +25,11 @@ export default new Vuex.Store({
     //读取令牌
     readToken(state,payload){
       return state.payload
+    },
+    //清空令牌
+    clearToken(state,payload) {
+      state.token = null
+      state.refresh_token = null
     }
   },
   actions: {

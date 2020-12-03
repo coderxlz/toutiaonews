@@ -15,3 +15,9 @@ export const saveData = (name,value) => {
 export const readData = (name) => {
   return localStorage.getItem(String(name))
 }
+
+//清空localStorage
+export const clearToken = () => {
+  console.log('令牌清空')
+  localStorage.clear()
+}

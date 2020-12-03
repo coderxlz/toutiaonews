@@ -1,0 +1,35 @@
+.nav_bar{
+  background-color: #3296fa;
+}
+
+.nav_bar span,.nav_bar .van-icon{
+  color: #fff;
+}
+
+.nav_bar .van-icon{
+  vertical-align: middle;
+  padding-right: 5px;
+}
+
+.van-nav-bar__title{
+  max-width: 100%;
+}
+
+.nav_bar .search{
+  width: 277px;
+  height: 32px;
+  background-color: #5babfb;
+  line-height: 32px;
+  text-align: center;
+  font-size: 14px;
+  border-radius: 20px;
+}
+
+.scroll-wrap{
+  position: fixed;
+  top: 46px;
+  bottom: 50px;
+  left: 0;
+  right: 0;
+  overflow-y: scroll;
+}

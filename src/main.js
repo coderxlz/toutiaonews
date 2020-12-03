@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 import vant from 'vant'
 
+import { Dialog } from 'vant';
+
 // 引入vantcss样式文件
 import 'vant/lib/index.css'
 
@@ -15,6 +17,7 @@ import 'lib-flexible'
 Vue.config.productionTip = false
 
 Vue.use(vant)
+Vue.use(Dialog)
 
 new Vue({
   router,

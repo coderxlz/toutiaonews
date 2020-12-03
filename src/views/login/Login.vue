@@ -59,14 +59,14 @@ export default {
     return {
       //用户提交表单数据
       user: {
-        mobile: '13966604177',
+        mobile: '17090086870',
         code: '246810'
       },
       //定义表单认证规则
       formatRules: {
         mobile: [
           {required: true,message: '手机号不能为空'},
-          {pattern: /^1[3|5|8|9]\d{9}$/,message: '请输入正确的手机号'}
+          {pattern: /^1[3|5|7|8|9]\d{9}$/,message: '请输入正确的手机号'}
         ],
         code: [
           {required: true,message: '验证码不能为空'},
@@ -99,6 +99,8 @@ export default {
         //登录成功，存储服务器返回的token令牌
         console.log(data)
         this.$store.commit('saveToken',{token: data.data.token,refresh_token: data.data.refresh_token})
+        //返回用户信息页面，暂时先这样处理
+        history.back()
       } catch (e) {
         console.log(e)
         Toast.fail ({
@@ -144,6 +146,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 @import url('~assets/css/login.css');
 </style>
