@@ -18,3 +18,11 @@ export const getNews = (params) => {
     params
   })
 }
+
+// 获取所有频道
+export const getAllChannels = () => {
+  return request({
+    url: '/app/v1_0/channels',
+    method: 'GET'
+  })
+}

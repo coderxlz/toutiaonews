@@ -15,11 +15,13 @@
         :error.sync="error"
         error-text="请求失败，点击重新加载"
       >
-        <van-cell
+        <article-item
           v-for="item in articles"
-          :key="item.aut_name"
-          :title="item.title"
-        />
+          :key="item.art_id"
+          :article="item"
+        >
+
+        </article-item>
       </van-list>
     </van-pull-refresh>
   </div>
@@ -27,7 +29,9 @@
 
 <script>
 import { getNews } from "@/network/home.js";
+import ArticleItem from '@/components/content/ArticleItem.vue';
 export default {
+  components: { ArticleItem },
   name: "NewsList",
   data() {
     return {
@@ -58,7 +62,7 @@ export default {
       // 上拉加载数据
       this.getArticalData().then((res) => {
         const getData = res;
-        if (getData.length !== 0) {
+        if (getData && getData.length !== 0) {
           this.articles.push(...getData);
           // 数据请求完毕，取消refreshing状态
           this.loading = false;
@@ -74,7 +78,7 @@ export default {
       this.refreshing = true;
       this.getArticalData().then((res) => {
         const getData = res;
-        if (getData.length !== 0) {
+        if (getData && getData.length !== 0) {
           this.articles.unshift(...getData);
           // 数据请求完毕，取消refreshing状态
           this.refreshing = false;

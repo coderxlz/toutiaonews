@@ -25,11 +25,64 @@
   border-radius: 20px;
 }
 
-.scroll-wrap{
+.scroll-wrap .van-tabs__wrap--scrollable{
+  height: 41px;
+}
+
+.scroll-wrap .van-tabs__content{
   position: fixed;
-  top: 46px;
+  top:87px;
   bottom: 50px;
   left: 0;
   right: 0;
   overflow-y: scroll;
+}
+
+.box{
+  flex-shrink: 0;
+  width: 33px;
+  font-size: 30px;
+  text-align: center;
+  line-height: 41px;
+  position: fixed;
+  right: 0;
+  background-color: #fff;
+  opacity: .9;
+}
+
+.box .van-icon{
+  vertical-align: middle;
+}
+
+.box::before{
+  content: "";
+  position: absolute;
+  display: block;
+  left: 0;
+  background-image: url('../img/boxbefore.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 100%;
+  width: 1px;
+}
+
+.van-tabs__nav--complete div:nth-last-of-type(3){
+  padding-right: 33px;
+}
+
+.van-popup{
+  height: 100%;
+}
+
+.van-popup .van-cell{
+  min-height: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.mychannel .van-grid-item__icon-wrapper{
+  position: absolute;
+  top: -5px;
+  right: 4px;
+  font-size: 17px;
 }

@@ -9,36 +9,68 @@
       </template>
     </van-nav-bar>
 
-    <van-tabs v-model="active" animated class="scroll-wrap">
+    <van-tabs v-model="active" animated class="scroll-wrap" swipeable>
       <van-tab v-for="item in channel" :title="item.name" :key="item.id">
         <!-- 将当前频道ID传入news展示页面 -->
         <news-list :channel="item.id"> </news-list>
       </van-tab>
+    <!-- 标签栏右侧菜单按钮 -->
+      <template #nav-right>
+        <div class="box" @click="menuClick">
+          <van-icon name="wap-nav" />
+        </div>
+      </template>
     </van-tabs>
+    <!-- 弹出层，最好将弹出层挂载到body之上，因此写在外部 -->
+    <!-- 图标位置 -->
+    <van-popup
+      v-model="ifShowPopup"
+      closeable
+      close-icon-position="top-left"
+      position="bottom"
+      round
+      overlay-class="mypopup"
+    >
+    <!-- 在模板中使用$event来接受事件参数 -->
+      <tab-control
+        :userChannel="channel"
+        :selChannel="active"
+        @close="ifShowPopup = false"
+        @update="active = $event">
+      </tab-control>
+    </van-popup>
   </div>
 </template>
 
 <script>
-import { getUserChanel } from "@/network/home.js";
+import { getUserChanel } from "@/network/home.js"
 
-import NewsList from "./childcomp/NewsList.vue";
+import NewsList from "./childcomp/NewsList.vue"
+import TabControl from "./childcomp/TabControl"
+
 export default {
   name: "Home",
   data() {
     return {
+      // 当前激活tab索引值
       active: 0,
       // 用户频道数
       channel: null,
+      // 是否显示弹出层
+      ifShowPopup: false,
     };
   },
   components: {
     NewsList,
+    TabControl,
+
   },
   created() {
     //页面初始化时，刷新用户频道数据
     this.UserChannel();
   },
   methods: {
+    // 异步请求用户订阅频道
     async UserChannel() {
       try {
         const { data } = await getUserChanel();
@@ -46,6 +78,10 @@ export default {
         console.log("频道总数", this.channel);
       } catch (e) {}
     },
+    // 菜单按钮被点击，弹出层显示
+    menuClick() {
+      this.ifShowPopup = true
+    }
   },
 };
 </script>
