@@ -1,20 +1,21 @@
 <template>
   <div class="layout">
-    <router-view/>
+    <keep-alive>
+      <router-view />
+    </keep-alive>
     <tabbar></tabbar>
   </div>
 </template>
 
 <script>
-import tabbar from 'components/content/Tabbar.vue'
+import tabbar from "components/content/Tabbar.vue";
 export default {
-  name: 'Layout',
+  name: "Layout",
   components: {
-    tabbar
-  }
-}
+    tabbar,
+  },
+};
 </script>
 
 <style>
-
 </style>

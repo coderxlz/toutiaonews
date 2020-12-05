@@ -26,3 +26,13 @@ export const getAllChannels = () => {
     method: 'GET'
   })
 }
+
+// 提交用户频道数据到线上
+// channels为用户关注的频道列表
+export const commitChannels = (channels) => {
+  return tokenRequest({
+    url: '/app/v1_0/user/channels',
+    method: 'PATCH',
+    data:channels
+  })
+}

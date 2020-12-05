@@ -135,6 +135,7 @@ export default {
         .then(() => {
           //清除令牌，操作state一定要通过commit
           this.$store.commit('clearToken')
+          this.$router.replace('/login')
         })
       // 点击取消后，触发catch回调
         .catch(() => {

@@ -42,7 +42,12 @@
 </template>
 
 <script>
-import { getAllChannels } from "@/network/home.js";
+import { getAllChannels,commitChannels } from "@/network/home.js";
+import { addChannel,removeChannel } from "@/utils/storage.js"
+
+import { mapState } from 'vuex'
+import { readData } from '../../../utils/storage';
+
 export default {
   name: "TabControl",
   created() {
@@ -79,10 +84,32 @@ export default {
         this.allChannels = data.data.channels;
       } catch (e) {}
     },
+
     // 当点击推荐频道时，将频道添加到用户频道中
-    recClick(item) {
+    async recClick(item) {
       this.userChannel.push(item);
+      const data = {
+        channels:[
+          {
+            id: item.id,
+            seq: this.userChannel.length
+          }
+        ]
+      }
+      // 根据用户登录状态，将频道列表数据进行持久化
+      if(this.token){
+        // 如果登录，将数据保存到服务器
+        try {
+          const getData = await commitChannels(data)
+          console.log('云存储',getData)
+        } catch (e) {}
+        
+      }else{
+        // 如果未登录，将数据存储到本地进行持久化
+        addChannel(item)
+      }
     },
+
     // 操作用户频道
     handleUserChannel(channel,index) {
       // 当处于编辑状态时，删除频道
@@ -93,6 +120,7 @@ export default {
           this.$emit('update',this.selChannel - 1)
         }
         this.userChannel.splice(index,1)
+          removeChannel(channel)
       }
       // 当处于非编辑状态时，跳转到对应频道
       else {
@@ -123,6 +151,7 @@ export default {
         return rec;
       }
     },
+    ...mapState(['token'])
   },
 };
 </script>
