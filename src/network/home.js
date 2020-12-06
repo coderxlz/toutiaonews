@@ -27,12 +27,20 @@ export const getAllChannels = () => {
   })
 }
 
-// 提交用户频道数据到线上
+// 提交用户添加频道数据到线上
 // channels为用户关注的频道列表
 export const commitChannels = (channels) => {
   return tokenRequest({
     url: '/app/v1_0/user/channels',
     method: 'PATCH',
     data:channels
+  })
+}
+
+// 用户删除频道数据同步
+export const deleteChannel = (id) => {
+  return tokenRequest({
+    url: `/app/v1_0/user/channels/${id}`,
+    method: 'DELETE'
   })
 }

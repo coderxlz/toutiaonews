@@ -42,14 +42,14 @@
 </template>
 
 <script>
-import { getAllChannels,commitChannels } from "@/network/home.js";
+import { getAllChannels,commitChannels,deleteChannel } from "@/network/home.js";
 import { addChannel,removeChannel } from "@/utils/storage.js"
 
 import { mapState } from 'vuex'
 import { readData } from '../../../utils/storage';
 
 export default {
-  name: "TabControl",
+  name: "ChannelControl",
   created() {
     this.getChannels();
   },
@@ -120,7 +120,14 @@ export default {
           this.$emit('update',this.selChannel - 1)
         }
         this.userChannel.splice(index,1)
+        
+        if(this.token){
+          deleteChannel(channel.id)
+        }
+        // 如果离线状态，同步localStorage数据
+        else{
           removeChannel(channel)
+        }
       }
       // 当处于非编辑状态时，跳转到对应频道
       else {

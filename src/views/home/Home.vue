@@ -2,7 +2,7 @@
   <div>
     <van-nav-bar class="nav_bar">
       <template #title>
-        <div class="search">
+        <div class="search" @click="toSearch">
           <van-icon name="search" size="18" />
           <span>搜索</span>
         </div>
@@ -32,24 +32,23 @@
       overlay-class="mypopup"
     >
       <!-- 在模板中使用$event来接受事件参数 -->
-      <tab-control
+      <channel-control
         :userChannel="channel"
         :selChannel="active"
         @close="ifShowPopup = false"
-        @update="active = $event"
-      >
-      </tab-control>
+        @update="active = $event">
+      </channel-control>
     </van-popup>
   </div>
 </template>
 
 <script>
-import { getUserChanel } from "@/network/home.js"
+import { getUserChanel } from "@/network/home.js";
 
-import { mapState } from "vuex"
+import { mapState } from "vuex";
 
-import NewsList from "./childcomp/NewsList.vue"
-import TabControl from "./childcomp/TabControl"
+import NewsList from "./childcomp/NewsList.vue";
+import ChannelControl from "./childcomp/ChannelControl";
 
 export default {
   name: "Home",
@@ -65,11 +64,11 @@ export default {
   },
   components: {
     NewsList,
-    TabControl,
-
+    ChannelControl,
+    ChannelControl,
   },
   computed: {
-    ...mapState(['token'])
+    ...mapState(["token"]),
   },
   created() {
     //页面初始化时，刷新用户频道数据
@@ -79,28 +78,34 @@ export default {
     // 异步请求用户订阅频道
     async UserChannel() {
       // 如果用户已登录，从服务器请求频道列表数据
-      if(this.token){
+      if (this.token) {
         try {
-        const { data } = await getUserChanel();
-        this.channel = data.data.channels;
-        console.log("服务器数据：", this.channel);
-      } catch (e) {}
-      }else{
-        // 未登录情况下从本地读取频道列表数据
-        // 将得到的频道列表存储进localStorage，localStorage没有数据的情况下存储
-        if(!localStorage.getItem('defaultChannels')){
-          localStorage.setItem('defaultChannels',JSON.stringify(this.channel))
-        }
-        this.channel = JSON.parse(localStorage.getItem('defaultChannels'))
-        console.log('本地数据：',this.channel)
+          const { data } = await getUserChanel();
+          this.channel = data.data.channels;
+          console.log("服务器数据：", this.channel);
+        } catch (e) {}
+      // 如果没有登录，再判断是否存在本地数据
+      } else if (!localStorage.getItem("defaultChannels")) {
+        try {
+          // 不存在本地数据，从服务器请求默认数据列表
+          const { data } = await getUserChanel();
+          const channel = data.data.channels;
+          localStorage.setItem("defaultChannels", JSON.stringify(channel));
+        } catch (e) {}
+      } else {
+        // 存在本地数据，读取本地数据
+        this.channel = JSON.parse(localStorage.getItem("defaultChannels"));
       }
-      
     },
     // 菜单按钮被点击，弹出层显示
     menuClick() {
-      this.ifShowPopup = true
+      this.ifShowPopup = true;
+    },
+    // 点击搜索按钮，跳转到搜索页面
+    toSearch() {
+      this.$router.push('/search')
     }
-  }
+  },
 };
 </script>
 
