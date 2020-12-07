@@ -132,7 +132,6 @@ export default {
       // 当处于非编辑状态时，跳转到对应频道
       else {
         // 向父组件发射关闭事件
-        console.log('发送id',index)
         this.$emit('close')
         // 向父组件发射当前选中索引值
         this.$emit('update',index)

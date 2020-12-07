@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 顶部导航栏 -->
     <van-nav-bar class="nav_bar">
       <template #title>
         <div class="search" @click="toSearch">

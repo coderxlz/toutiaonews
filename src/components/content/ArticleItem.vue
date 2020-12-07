@@ -1,6 +1,7 @@
 <template>
   <div>
-    <van-cell>
+    <!-- 为新闻cell添加路由跳转，点击跳转到文章详情页并传递对应文章id -->
+    <van-cell :to="'/article/'+article.art_id">
       <!-- 标题最多显示三行 -->
       <template #title class="van-multi-ellipsis--l3">
         {{ article.title }}
@@ -37,7 +38,7 @@ export default {
       default() {
         return null;
       },
-    },
+    }
   },
 };
 </script>

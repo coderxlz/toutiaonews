@@ -33,6 +33,13 @@ const routes = [
   {
     path: '/login',
     component: () => import('views/login/Login.vue')
+  },
+  {
+    // 使用动态路由，在文章展示页面中传入文章id
+    path: '/article/:articleId',
+    component: () => import('views/article/Article.vue'),
+    // 当在路由中设置了props为true后，会将params通过props的方式映射到对应的页面中
+    props: true
   }
 ]
 
