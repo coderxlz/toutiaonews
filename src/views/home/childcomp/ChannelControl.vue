@@ -29,8 +29,8 @@
     <!-- 展示所有推荐频道 -->
     <van-grid :border="false" class="channels" :gutter="11">
       <van-grid-item
-        v-for="item in recChannels"
-        :key="item.id"
+        v-for="(item,index) in recChannels"
+        :key="index"
         @click="recClick(item)"
       >
         <template #text>

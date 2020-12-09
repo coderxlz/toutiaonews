@@ -52,42 +52,75 @@
         class="markdown-body"
         ref="news"
       ></p>
+      <!-- 文章评论区部分 -->
+      <comment
+        :type="'a'"
+        :source="art_id"
+        :list="list"></comment>
     </div>
     <!-- 底部导航栏部分 -->
     <bottom-bar
-      :ifGood="ifGood"
-      :ifStar="ifStar"></bottom-bar>
+      :ifGoodOnline="ifGood"
+      :ifStarOnline="ifStar"
+      :art_id="art_id"
+      :com_count="list.length"
+      @writecomment="show = !show"
+    ></bottom-bar>
+    <!-- 评论弹出层 -->
+    <write-comment
+      :target="art_id"
+      @newComment="addComment"
+      :ifBottomShow="show"
+      @close="show = !show"/>
+    <!-- 回复评论弹出层 -->
+    <reply
+      :art_id="art_id"></reply>
   </div>
 </template>
 
 <script>
 import "@/assets/css/github-markdown.css";
-import { getDetailNews, 
-         follow, 
-         deleteFollow,
-         starNews,
-         cancelStar } from "@/network/article.js";
+import {
+  getDetailNews,
+  follow,
+  deleteFollow,
+  starNews,
+  cancelStar,
+} from "@/network/article.js";
 import { Toast } from "vant";
+// 引入大数字处理工具
+import jsonBig from "json-bigint";
 // 引入图片预览组件，需要单独引入
 import { ImagePreview } from "vant";
-import BottomBar from './childcomp/BottomBar.vue';
+import BottomBar from "./childcomp/BottomBar.vue";
+import Comment from "./childcomp/Comment.vue";
+import WriteComment from './childcomp/WriteComment.vue';
+import Reply from './childcomp/Reply.vue'
 export default {
-  components: { BottomBar },
+  components: { BottomBar, Comment, WriteComment,Reply },
   name: "Article",
   data() {
     return {
       // 文章信息
       article: null,
+      // 文章id
+      art_id: this.articleId,
       // 用户id
       user_id: null,
+      // 文章评论总数
+      total_count: 0,
       // 是否关注用户
       ifFollow: false,
       // 关注用户按钮是否处于加载状态
       ifFollowLoading: false,
       // 用户是否点赞
-      ifGood: false,
+      ifGood: -1,
       // 文章是否收藏
-      ifStar: false
+      ifStar: false,
+      // 用户存储新生成的评论对象
+      list: [],
+      // 评论编辑框是否显示
+      show: false
     };
   },
   created() {
@@ -113,15 +146,16 @@ export default {
   },
   methods: {
     async getNews() {
-      // 请求数据
+      // 请求文章数据
       try {
         const { data } = await getDetailNews(this.articleId);
-        console.log(data);
+        console.log('文章数据',data);
         const getData = data.data;
         // 此时文章数据更新
         this.article = getData;
         this.ifFollow = getData.is_followed;
         this.user_id = getData.aut_id;
+        this.ifGood = getData.attitude;
         // 给文章中所有图片添加预览效果，注意，只能放在此处，才能保证一定是在异步请求的图片数据已经得到后再取的img元素
         // 无法放在mounted中并结合$nextTick的方式使用，
         // 因为$nextTick只能保证回调函数会在下一次dom更新循环之后调用，但再下一次dom更新循环之后，
@@ -159,15 +193,15 @@ export default {
           this.ifFollowLoading = true;
           const res = await deleteFollow(this.user_id);
           this.ifFollowLoading = false;
-          this.ifFollow = false
+          this.ifFollow = false;
           console.log(res);
         } catch (err) {
           if (err.response && err.response.status === 401) {
             Toast("您还没有登录，请先登录");
             this.ifFollowLoading = false;
-            return
+            return;
           }
-          this.ifFollowLoading = false
+          this.ifFollowLoading = false;
         }
       } else {
         // 没有关注用户，关注用户
@@ -175,17 +209,24 @@ export default {
           this.ifFollowLoading = true;
           const res = await follow(this.user_id);
           this.ifFollowLoading = false;
-          this.ifFollow = true
+          this.ifFollow = true;
           console.log(res.status);
         } catch (err) {
           if (err.response && err.response.status === 401) {
             Toast("您还没有登录，请先登录");
             this.ifFollowLoading = false;
-            return
+            return;
           }
-          this.ifFollowLoading = false
+          this.ifFollowLoading = false;
         }
       }
+    },
+    // 将子组件writeComment传递过来的新的评论对象通过props单向数据流添加到
+    // 子组件comment异步获取的评论列表数组之中，简单一句话，通过props可以让
+    // 子组件随着父组件变化而变化，模范父组件的行为，包括数组的unshift等
+    addComment(new_obj) {
+      console.log(new_obj)
+      this.list.unshift(new_obj)
     }
   },
 };

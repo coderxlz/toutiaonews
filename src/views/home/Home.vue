@@ -9,9 +9,9 @@
         </div>
       </template>
     </van-nav-bar>
-
+    <!-- 频道标签页 -->
     <van-tabs v-model="active" animated class="scroll-wrap" swipeable>
-      <van-tab v-for="item in channel" :title="item.name" :key="item.id">
+      <van-tab v-for="(item,index) in channel" :title="item.name" :key="index">
         <!-- 将当前频道ID传入news展示页面 -->
         <news-list :channel="item.id"> </news-list>
       </van-tab>

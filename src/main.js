@@ -22,6 +22,9 @@ Vue.config.productionTip = false
 Vue.use(vant)
 Vue.use(Dialog)
 
+// 注册全局事件总线
+Vue.prototype.$bus = new Vue()
+
 new Vue({
   router,
   store,

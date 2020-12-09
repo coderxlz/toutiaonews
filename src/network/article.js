@@ -27,20 +27,39 @@ export const deleteFollow = (userId) => {
 }
 
 // 收藏文章
-export const starNews = (new_id) => {
+export const starNews = (art_id) => {
   return tokenRequest({
     url: '/app/v1_0/article/collections',
     method: 'POST',
     data:{
-      target: new_id
+      target: art_id
     }
   })
 }
 
 // 取消收藏文章
-export const cancelStar = (new_id) => {
+export const cancelStar = (art_id) => {
   return tokenRequest({
-    url: `/app/v1_0/article/collections/${new_id}`,
+    url: `/app/v1_0/article/collections/${art_id}`,
+    method: 'DELETE'
+  })
+}
+
+// 对文章点赞
+export const likeNew = (art_id) => {
+  return tokenRequest({
+    url: '/app/v1_0/article/likings',
+    method: 'POST',
+    data: {
+      target: art_id
+    }
+  })
+}
+
+// 取消对文章点赞
+export const likeCancel = (art_id) => {
+  return tokenRequest({
+    url: `/app/v1_0/article/likings/${art_id}`,
     method: 'DELETE'
   })
 }
