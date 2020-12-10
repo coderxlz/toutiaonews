@@ -19,7 +19,9 @@
           </template>
 
           <template #right-icon>
-            <div class="edit" @click="$router.push('/editprofile')">编辑资料</div>
+            <div class="edit" @click="$router.push('/editprofile')">
+              编辑资料
+            </div>
           </template>
         </van-cell>
       </van-cell-group>
@@ -63,7 +65,18 @@
       </van-grid>
     </div>
 
-    <div class="offline" v-else @click="$router.push('/login')">
+    <div
+      class="offline"
+      v-else
+      @click="
+        $router.push({
+          name: 'login',
+          query: {
+            redirect: '/profile',
+          },
+        })
+      "
+    >
       <div>
         <img src="~assets/img/avatar.png" alt="" />
       </div>
@@ -109,44 +122,47 @@
 
 <script>
 import { mapState } from "vuex";
-import { getUserDetail } from '../../network/profile'
+import { getUserDetail } from "../../network/profile";
 export default {
   name: "Profile",
   data() {
     return {
-      userData: null
+      userData: null,
     };
   },
-  created () {
-    this.getUserData()
+  created() {
+    this.getUserData();
   },
   computed: {
     //将state中的令牌属性映射到computed中
-      ...mapState(['token']),
+    ...mapState(["token"]),
   },
   methods: {
     logout() {
       //点击退出按钮时，出现确认框需要用户确认
-      this.$dialog.confirm({
-        title: "系统提示",
-        message: "确认退出登录吗？",
-      })
-      // 点击确认后，触发then回调
+      this.$dialog
+        .confirm({
+          title: "系统提示",
+          message: "确认退出登录吗？",
+        })
+        // 点击确认后，触发then回调
         .then(() => {
           //清除令牌，操作state一定要通过commit
-          this.$store.commit('clearToken')
-          this.$router.replace('/login')
+          this.$store.commit("clearToken");
+          this.$router.replace("/login");
+          // 清除页面缓存，为展示新的登录用户资料做准备
+          this.$store.commit("clearCache");
         })
-      // 点击取消后，触发catch回调
+        // 点击取消后，触发catch回调
         .catch(() => {
           // on cancel
         });
     },
     // 用户资料信息请求
     async getUserData() {
-      const { data } = await getUserDetail()
-      this.userData = data.data
-    }
+      const { data } = await getUserDetail();
+      this.userData = data.data;
+    },
   },
 };
 </script>

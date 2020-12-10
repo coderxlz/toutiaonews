@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ref="article">
     <van-pull-refresh
       v-model="refreshing"
       @refresh="onRefresh"
@@ -20,7 +20,6 @@
           :key="index"
           :article="item"
         >
-
         </article-item>
       </van-list>
     </van-pull-refresh>
@@ -47,6 +46,8 @@ export default {
       successText: "刷新成功",
       // 列表数据加载失败，err设为true，显示错误提示
       error: false,
+      // 当前标签页偏移量
+      offset: 0
     };
   },
   props: {
@@ -107,6 +108,20 @@ export default {
       }
     },
   },
+  mounted () {
+    const articleList = this.$refs.article
+    articleList.onscroll = function () {
+      console.log(articleList.scrollTop)
+    }
+  },
+  // 在重新进入当前文章浏览页面时，将保存的偏移量设置回来
+  activated () {
+    
+  },
+  // 在点击文章进入文章详情页面浏览文章时，记录当前页面offset偏移量
+  deactivated () {
+    
+  }
 };
 </script>
 

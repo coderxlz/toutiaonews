@@ -16,6 +16,12 @@ export default {
     return {
       active: 0
     }
+  },
+  mounted () {
+    this.$bus.$on('indexChange',(index) => {
+      console.log(index)
+      this.active = index
+    })
   }
 }
 </script>

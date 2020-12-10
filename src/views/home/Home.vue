@@ -22,7 +22,7 @@
         </div>
       </template>
     </van-tabs>
-    <!-- 弹出层，最好将弹出层挂载到body之上，因此写在外部 -->
+    <!-- 频道弹出层，最好将弹出层挂载到body之上，因此写在外部 -->
     <!-- 图标位置 -->
     <van-popup
       v-model="ifShowPopup"
@@ -61,7 +61,16 @@ export default {
       channel: null,
       // 是否显示弹出层
       ifShowPopup: false,
+      // 当前页面滚动距离
     };
+  },
+  // 设置组件缓存之后，每次组件退出与进入都会激活deactivated和activated
+  // 为解决组件缓存后scrollTop高度不一致的问题，记录scrollTop，每次activated时重新赋值
+  activated () {
+    console.log('activated')
+  },
+  deactivated () {
+    console.log('deactivated')
   },
   components: {
     NewsList,
