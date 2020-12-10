@@ -19,7 +19,7 @@
           </template>
 
           <template #right-icon>
-            <div class="edit">编辑资料</div>
+            <div class="edit" @click="$router.push('/editprofile')">编辑资料</div>
           </template>
         </van-cell>
       </van-cell-group>

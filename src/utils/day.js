@@ -25,3 +25,8 @@ Vue.filter('commentTimeForamt',data => {
   // 使用dayjs进行格式化
   return dayjs(data).format('MM-DD HH:mm')
 })
+
+// 格式化个人信息页面birthday年-月-日
+export const birthdayFormat = (birthday) => {
+  return dayjs(birthday).format('YY-MM-DD')
+}

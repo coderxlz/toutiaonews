@@ -7,7 +7,10 @@
     >
       <van-cell class="head">
         <template #icon >
-          <van-icon name="cross" @click="show = false"/>
+          <van-icon 
+            name="cross" 
+            @click="show = false"
+          />
         </template>
         <template #title>
           <span>8条回复</span>
@@ -22,16 +25,22 @@
       <!-- 复用组件Comment，传入评论id -->
       <comment
         :type="'c'"
-        :source="com_id"></comment>
+        :source="com_id"
+      ></comment>
       <!-- 弹出层底部回复按钮 -->
       <div class="popBottomButton">
-        <van-button text="回复" round type="info" @click="showReply = !showReply"></van-button>
+        <van-button 
+          text="回复" 
+          round type="info" 
+          @click="showReply = !showReply"
+        ></van-button>
       </div>
       <write-comment
         :ifBottomShow="showReply"
         :target="com_id"
         :art_id="art_id"
-        @close="showReply = !showReply"></write-comment>
+        @close="showReply = !showReply"
+      ></write-comment>
     </van-popup>
   </div>
 </template>
